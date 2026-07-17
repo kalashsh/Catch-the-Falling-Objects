@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Star Catcher — Catch the Falling Objects</title>
+  <!-- Link to our external CSS file -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ========================================================
+       START SCREEN
+       Shown when the game first loads.
+  ======================================================== -->
+  <div id="start-screen" class="screen active">
+    <div class="screen-card">
+      <div class="logo">⭐</div>
+      <h1 class="game-title">Star Catcher</h1>
+      <p class="subtitle">Catch the stars, dodge nothing — just don't miss!</p>
+
+      <!-- How to play instructions -->
+      <div class="how-to-play">
+        <div class="instruction">
+          <span class="key">← →</span>
+          <span>Move basket</span>
+        </div>
+        <div class="instruction">
+          <span class="key">Touch</span>
+          <span>Tap left / right half</span>
+        </div>
+        <div class="instruction">
+          <span class="icon">⭐</span>
+          <span>+1 point each catch</span>
+        </div>
+        <div class="instruction">
+          <span class="icon">💔</span>
+          <span>Lose a life on miss</span>
+        </div>
+      </div>
+
+      <button id="start-btn" class="btn btn-primary">Play Now</button>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       GAME OVER SCREEN
+       Shown when all lives are lost.
+  ======================================================== -->
+  <div id="gameover-screen" class="screen">
+    <div class="screen-card">
+      <div class="logo">💫</div>
+      <h2 class="game-title">Game Over</h2>
+      <p class="subtitle">You ran out of lives!</p>
+
+      <!-- Final stats displayed here by JavaScript -->
+      <div class="final-stats">
+        <div class="stat-row">
+          <span class="stat-label">Score</span>
+          <span class="stat-value" id="final-score">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Level Reached</span>
+          <span class="stat-value" id="final-level">1</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Best Score</span>
+          <span class="stat-value" id="best-score">0</span>
+        </div>
+      </div>
+
+      <button id="restart-btn" class="btn btn-primary">Play Again</button>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       GAME SCREEN
+       The actual gameplay area.
+  ======================================================== -->
+  <div id="game-screen" class="screen">
+
+    <!-- HUD: score, level, lives shown at the top -->
+    <div id="hud">
+      <div class="hud-item">
+        <span class="hud-label">Score</span>
+        <span class="hud-value" id="score-display">0</span>
+      </div>
+      <div class="hud-item hud-center">
+        <span class="hud-label">Level</span>
+        <span class="hud-value" id="level-display">1</span>
+      </div>
+      <div class="hud-item hud-right">
+        <span class="hud-label">Lives</span>
+        <span class="hud-value" id="lives-display">❤️❤️❤️</span>
+      </div>
+    </div>
+
+    <!-- The canvas where the game is drawn -->
+    <canvas id="game-canvas"></canvas>
+
+    <!-- Mobile touch controls: tap left or right half to move -->
+    <div id="touch-controls">
+      <div id="touch-left"  class="touch-zone">◀</div>
+      <div id="touch-right" class="touch-zone">▶</div>
+    </div>
+
+  </div>
+
+  <!-- Link to our external JavaScript file (placed at bottom so HTML loads first) -->
+  <script src="script.js"></script>
+</body>
+</html>

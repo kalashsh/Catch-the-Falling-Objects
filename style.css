@@ -1,0 +1,395 @@
+/* ============================================================
+   STAR CATCHER — style.css
+   A modern, glassmorphism-themed game UI.
+   Written for beginner web dev students — every section
+   is commented so you can understand what's happening.
+============================================================ */
+
+
+/* ----------------------------------------------------------
+   1. RESET & BASE STYLES
+   Remove browser defaults and set a consistent foundation.
+---------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;   /* include padding/border in width/height */
+  margin: 0;
+  padding: 0;
+}
+
+/* CSS Custom Properties (variables) — change these to re-theme the whole game */
+:root {
+  --color-bg-start:   #0f0c29;   /* deep purple-black */
+  --color-bg-mid:     #302b63;   /* mid purple */
+  --color-bg-end:     #24243e;   /* dark slate */
+
+  --color-accent:     #a78bfa;   /* violet */
+  --color-accent2:    #f472b6;   /* pink */
+  --color-gold:       #fbbf24;   /* amber / gold for stars */
+
+  --color-glass-bg:   rgba(255, 255, 255, 0.08);
+  --color-glass-border: rgba(255, 255, 255, 0.18);
+
+  --color-text:       #f1f5f9;
+  --color-muted:      #94a3b8;
+
+  --font-display:     'Segoe UI', system-ui, sans-serif;
+
+  --radius-card:      24px;
+  --radius-btn:       50px;
+
+  --shadow-glow: 0 0 30px rgba(167, 139, 250, 0.4),
+                 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+
+/* ----------------------------------------------------------
+   2. BODY — animated gradient background
+---------------------------------------------------------- */
+body {
+  font-family: var(--font-display);
+  color: var(--color-text);
+  min-height: 100vh;
+  overflow: hidden;   /* prevent scrollbars during gameplay */
+
+  /* Three-stop gradient that slowly animates */
+  background: linear-gradient(
+    135deg,
+    var(--color-bg-start),
+    var(--color-bg-mid),
+    var(--color-bg-end)
+  );
+  background-size: 400% 400%;
+  animation: bgShift 12s ease infinite;
+}
+
+/* Keyframe: slowly moves the gradient around */
+@keyframes bgShift {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
+
+/* ----------------------------------------------------------
+   3. SCREEN SYSTEM
+   We show/hide three screens: start, game, gameover.
+   Only the screen with class "active" is visible.
+---------------------------------------------------------- */
+.screen {
+  position: fixed;
+  inset: 0;                  /* shorthand for top/right/bottom/left: 0 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Hidden by default */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+/* The active screen fades in */
+.screen.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Game screen uses a column layout for HUD + canvas */
+#game-screen {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 0;
+}
+
+
+/* ----------------------------------------------------------
+   4. GLASSMORPHISM CARD
+   The frosted-glass card used on start and game-over screens.
+---------------------------------------------------------- */
+.screen-card {
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(20px);             /* the "frost" effect */
+  -webkit-backdrop-filter: blur(20px);     /* Safari support */
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-glow);
+
+  padding: 48px 40px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+
+  /* Subtle entrance animation */
+  animation: cardIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes cardIn {
+  from { transform: translateY(30px) scale(0.95); opacity: 0; }
+  to   { transform: translateY(0)    scale(1);    opacity: 1; }
+}
+
+
+/* ----------------------------------------------------------
+   5. TYPOGRAPHY — title, subtitle, labels
+---------------------------------------------------------- */
+.logo {
+  font-size: 64px;
+  line-height: 1;
+  margin-bottom: 12px;
+  /* Floating animation for the emoji logo */
+  animation: floatLogo 3s ease-in-out infinite;
+}
+
+@keyframes floatLogo {
+  0%, 100% { transform: translateY(0);    }
+  50%       { transform: translateY(-10px); }
+}
+
+.game-title {
+  font-size: clamp(28px, 6vw, 40px);   /* responsive font size */
+  font-weight: 800;
+  letter-spacing: -0.5px;
+
+  /* Gradient text using background-clip trick */
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: var(--color-muted);
+  font-size: 15px;
+  margin-bottom: 32px;
+  line-height: 1.5;
+}
+
+
+/* ----------------------------------------------------------
+   6. HOW-TO-PLAY SECTION (start screen)
+---------------------------------------------------------- */
+.how-to-play {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.instruction {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+/* Keyboard key badge */
+.key {
+  background: rgba(167, 139, 250, 0.2);
+  border: 1px solid var(--color-accent);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-accent);
+  font-family: monospace;
+}
+
+.icon {
+  font-size: 20px;
+}
+
+
+/* ----------------------------------------------------------
+   7. BUTTONS
+---------------------------------------------------------- */
+.btn {
+  display: inline-block;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: var(--radius-btn);
+  padding: 14px 40px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+/* Primary (purple gradient) button */
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent2));
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(167, 139, 250, 0.5);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.15);
+  box-shadow: 0 6px 30px rgba(167, 139, 250, 0.7);
+  transform: translateY(-2px);
+}
+
+
+/* ----------------------------------------------------------
+   8. FINAL STATS (game-over screen)
+---------------------------------------------------------- */
+.final-stats {
+  margin: 24px 0 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 12px 20px;
+}
+
+.stat-label {
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-gold);
+}
+
+
+/* ----------------------------------------------------------
+   9. HUD (in-game heads-up display)
+---------------------------------------------------------- */
+#hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 12px 20px 8px;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hud-center { align-items: center; }
+.hud-right  { align-items: flex-end; }
+
+.hud-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-muted);
+}
+
+.hud-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+/* Animate score when it changes — added via JS */
+.hud-value.pop {
+  animation: pop 0.25s ease;
+}
+
+@keyframes pop {
+  0%   { transform: scale(1);    }
+  50%  { transform: scale(1.35); color: var(--color-gold); }
+  100% { transform: scale(1);    }
+}
+
+
+/* ----------------------------------------------------------
+   10. CANVAS (gameplay area)
+---------------------------------------------------------- */
+#game-canvas {
+  display: block;
+  flex: 1;
+  width: 100%;
+  /* Canvas height is set dynamically in JS */
+}
+
+
+/* ----------------------------------------------------------
+   11. MOBILE TOUCH CONTROLS
+---------------------------------------------------------- */
+#touch-controls {
+  display: none;   /* hidden on desktop, shown on touch devices */
+  flex-shrink: 0;
+  height: 70px;
+  background: rgba(0,0,0,0.4);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  flex-direction: row;
+}
+
+/* Show touch controls on smaller/touch screens */
+@media (max-width: 768px), (hover: none) {
+  #touch-controls {
+    display: flex;
+  }
+}
+
+.touch-zone {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: rgba(255,255,255,0.3);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.touch-zone:active {
+  background: rgba(167, 139, 250, 0.2);
+  color: var(--color-accent);
+}
+
+
+/* ----------------------------------------------------------
+   12. RESPONSIVE TWEAKS
+---------------------------------------------------------- */
+@media (max-width: 480px) {
+  .screen-card {
+    padding: 36px 24px;
+  }
+
+  .how-to-play {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  #hud {
+    padding: 10px 14px 6px;
+  }
+
+  .hud-value {
+    font-size: 18px;
+  }
+}
