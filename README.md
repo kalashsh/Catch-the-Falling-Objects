@@ -22,13 +22,12 @@ A fun browser game built using **HTML**, **CSS**, and **Vanilla JavaScript**.
 ## How to Run
 
 1. Download or clone the repository.
-2. Open `index.html` in your browser.
+2. Open `(https://kalashsh.github.io/Catch-the-Falling-Objects/)` in your browser.
 
 ## Controls
 
 - ⬅ Left Arrow
 - ➡ Right Arrow
-- A / D keys (if supported)
 
 ## Future Improvements
 
